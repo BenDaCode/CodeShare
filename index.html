@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Code Share</title>
+  </head>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/highlight.min.js"></script>
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/styles/dracula.min.css">
+  <script>hljs.initHighlightingOnLoad();
+        hljs.initHighlighting.called = false;
+      hljs.initHighlighting();</script>
+  <script>
+    var socket = io();
+    var language="JavaScript";
+
+    function updateCode(code){
+      socket.emit('codecontent', code);
+    }
+
+    function setLanguage(sel) {
+      language=sel.options[sel.selectedIndex].value;
+      document.getElementById("current_lang").innerHTML=language;
+      var content= document.getElementById('insertblock').innerHTML;
+
+      updateCode(content);
+      
+    }
+
+    socket.on('codecontent', function(code){
+      var i=1;
+      var data=code.split("<div>");
+      var content="";
+
+      data.forEach(function(row){
+        if(i==1){
+          content+="<div><span>"+i+"</span> "+row+"</div>";
+        }else{
+          content+="<div><span>"+i+"</span> "+row;
+        }
+      
+        i++;
+      });
+
+      document.getElementById('codeblock').innerHTML="<code class='"+language+"'>"+content+"</code>";
+      hljs.initHighlighting.called = false;
+      hljs.initHighlighting();
+    });
+
+    document.addEventListener('keydown', function(e){
+
+      if (e.keyCode === 9) { //tab key
+      
+          e.preventDefault();  //this will prevent us from tabbing out of the editor
+
+          //now insert four non-breaking spaces for the tab key
+          var editor = document.getElementById("insertblock");
+          var doc = editor.ownerDocument.defaultView;
+          var sel = doc.getSelection();
+          var range = sel.getRangeAt(0);
+
+          var tabNode = document.createTextNode("\u00a0\u00a0\u00a0\u00a0");
+          range.insertNode(tabNode);
+
+          range.setStartAfter(tabNode);
+          range.setEndAfter(tabNode); 
+          sel.removeAllRanges();
+          sel.addRange(range);
+      }
+    });
+
+  </script>
+  <style>
+    body{
+      font-family:'Calibri';
+      margin:0;
+      background-color:dimgrey;
+    }
+   .container{
+     width:48%;
+     float:left;
+     margin-left:1%;
+     margin-right:1%;
+
+   }
+   .header{
+     margin:auto;
+     float:left;
+     width:100%;
+     height:1.5em;
+     font-weight:bold;
+     font-size:1.5em;
+     background-color:#333333;
+     color:white;
+     padding:.3em;
+   }
+   pre{
+    background-color:lightgrey;
+    position:absolute;
+    top:5em;
+    bottom:0px;
+    width:inherit;
+    overflow:auto;
+
+   }
+
+  </style>
+  <body>
+    <div class="header">
+      Code Share
+    </div>
+    <div class="container">
+      <b>My Code</b>
+      <select onchange="setLanguage(this)">
+        <option value='JavaScript' selected>JavaScript</option>
+        <option value='php5'>PHP</option>
+      </select>
+      <pre id="insertblock"  contenteditable="true" onkeyup="updateCode(this.innerHTML)">
+        test
+      </pre>
+    </div>
+    <div class="container">
+      <b>Shared Code</b> (<i id="current_lang"></i>)
+      <pre id='codeblock' contenteditable="false" style='background-color:transparent'>
+      </pre>
+    </div>
+  </body>
+</html>
