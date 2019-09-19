@@ -1,75 +1,38 @@
 <!doctype html>
 <html>
   <head>
-    <title>Code Share</title>
+    <meta charset="UTF-8">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    <title>Code Share </title>
+    <link rel="stylesheet" href="addons/foundation/css/foundation.css">
+    <link rel="stylesheet" href="addons/foundation-icons/foundation-icons.css">
   </head>
   <script src="/socket.io/socket.io.js"></script>
-  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/highlight.min.js"></script>
-  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/styles/dracula.min.css">
-  <script>hljs.initHighlightingOnLoad();
-        hljs.initHighlighting.called = false;
-      hljs.initHighlighting();</script>
+  <script src="addons/foundation/js/vendor/jquery.js"></script>
+  <script src="addons/foundation/js/vendor/modernizr.js"></script>
+  <script src="addons/foundation/js/vendor/fastclick.js"></script>
+  <script src="addons/foundation/js/foundation.min.js"></script>
+  <script src="addons/foundation/js/foundation.reveal.js"></script>
   <script>
     var socket = io();
     var language="JavaScript";
 
-    function updateCode(code){
-      socket.emit('codecontent', code);
-    }
-
-    function setLanguage(sel) {
-      language=sel.options[sel.selectedIndex].value;
-      document.getElementById("current_lang").innerHTML=language;
-      var content= document.getElementById('insertblock').innerHTML;
-
-      updateCode(content);
-      
-    }
-
-    socket.on('codecontent', function(code){
-      var i=1;
-      var data=code.split("<div>");
+    socket.on('getRooms', function(rooms){
       var content="";
 
-      data.forEach(function(row){
-        if(i==1){
-          content+="<div><span>"+i+"</span> "+row+"</div>";
-        }else{
-          content+="<div><span>"+i+"</span> "+row;
+      for (var key in rooms) {
+        if (rooms.hasOwnProperty(key)) {
+            content+="<li><a href='rooms/"+key+"'>"+key+"</a></li>";
         }
-      
-        i++;
-      });
-
-      document.getElementById('codeblock').innerHTML="<code class='"+language+"'>"+content+"</code>";
-      hljs.initHighlighting.called = false;
-      hljs.initHighlighting();
-    });
-
-    document.addEventListener('keydown', function(e){
-
-      if (e.keyCode === 9) { //tab key
-      
-          e.preventDefault();  //this will prevent us from tabbing out of the editor
-
-          //now insert four non-breaking spaces for the tab key
-          var editor = document.getElementById("insertblock");
-          var doc = editor.ownerDocument.defaultView;
-          var sel = doc.getSelection();
-          var range = sel.getRangeAt(0);
-
-          var tabNode = document.createTextNode("\u00a0\u00a0\u00a0\u00a0");
-          range.insertNode(tabNode);
-
-          range.setStartAfter(tabNode);
-          range.setEndAfter(tabNode); 
-          sel.removeAllRanges();
-          sel.addRange(range);
       }
+
+      document.getElementById("rooms_list").innerHTML=content;
     });
 
-  </script>
+    </script>
   <style>
     body{
       font-family:'Calibri';
@@ -109,20 +72,17 @@
     <div class="header">
       Code Share
     </div>
-    <div class="container">
-      <b>My Code</b>
-      <select onchange="setLanguage(this)">
-        <option value='JavaScript' selected>JavaScript</option>
-        <option value='php5'>PHP</option>
-      </select>
-      <pre id="insertblock"  contenteditable="true" onkeyup="updateCode(this.innerHTML)">
-        test
-      </pre>
+    <div class="row">
+      <div class="small-3 columns">
+          Share your code or join a room!
+          <a href="rooms/data">New Room</a>
+      </div>
+      <div class="small-3 columns">
+          <ul id="rooms_list">
+          </ul>
+      </div>
     </div>
-    <div class="container">
-      <b>Shared Code</b> (<i id="current_lang"></i>)
-      <pre id='codeblock' contenteditable="false" style='background-color:transparent'>
-      </pre>
-    </div>
+   
+  
   </body>
 </html>

@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "description": "real-time code sharing",
     "dependencies": {
+        "ejs": "^2.7.1",
         "express": "^4.17.1",
         "highlight.js": "^9.15.10",
         "socket.io": "^2.2.0"

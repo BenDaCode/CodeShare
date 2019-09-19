@@ -1,0 +1,181 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    <title>Code Share - <%= room %></title>
+    <link rel="stylesheet" href="/addons/foundation/css/foundation.css">
+    <link rel="stylesheet" href="/addons/foundation-icons/foundation-icons.css">
+  </head>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/highlight.min.js"></script>
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/styles/dracula.min.css">
+  <script>
+      hljs.initHighlightingOnLoad();
+      hljs.initHighlighting.called = false;
+      hljs.initHighlighting();
+  </script>
+  <script>
+
+    var socket = io();
+    var language="JavaScript";
+    var url = window.location.href.split("/");
+    var room=url[4];
+
+    socket.on('connect', function() {
+      socket.emit('room', room);
+      document.getElementById("current_lang").innerHTML=language;
+    });
+
+    function updateCode(code){
+      socket.emit('updateCode', code);
+    }
+
+    socket.on('getRooms', function(rooms){
+      console.log(rooms);
+    });
+
+    function setLanguage(sel) {
+      language=sel.options[sel.selectedIndex].value;
+      document.getElementById("current_lang").innerHTML=language;
+      var content= document.getElementById('insertblock').innerHTML;
+
+      updateCode(content);
+      
+    }
+
+    socket.on('updateCode', function(code){
+
+      if(typeof code !=="undefined" && code!= null){
+        var i=1;
+        var data=code.split("<div>");
+        var content="";
+
+        data.forEach(function(row){
+          if(i==1){
+            content+="<div><span>"+i+"</span> "+row+"</div>";
+          }else{
+            content+="<div><span>"+i+"</span> "+row;
+          }
+        
+          i++;
+        });
+
+        document.getElementById('codeblock').innerHTML="<code class='"+language+"' style='border-style:none'>"+content+"</code>";
+        hljs.initHighlighting.called = false;
+        hljs.initHighlighting();
+      }
+    });
+
+    document.addEventListener('keydown', function(e){
+
+      if (e.keyCode === 9) { //tab key
+      
+          e.preventDefault();  //this will prevent us from tabbing out of the editor
+
+          //now insert four non-breaking spaces for the tab key
+          var editor = document.getElementById("insertblock");
+          var doc = editor.ownerDocument.defaultView;
+          var sel = doc.getSelection();
+          var range = sel.getRangeAt(0);
+
+          var tabNode = document.createTextNode("\u00a0\u00a0\u00a0\u00a0");
+          range.insertNode(tabNode);
+
+          range.setStartAfter(tabNode);
+          range.setEndAfter(tabNode); 
+          sel.removeAllRanges();
+          sel.addRange(range);
+      }
+    });
+
+  </script>
+
+  <style>
+    body{
+      font-family:'Calibri';
+      margin:0;
+      background-color:dimgrey;
+    }
+   .container{
+     width:48%;
+     float:left;
+     margin-left:1%;
+     margin-right:1%;
+
+   }
+   pre{
+      background-color:lightgrey;
+      height: 84vh;
+      width:100%;
+      overflow:auto;
+   }
+   .row-list{
+        margin:0;
+        width:100%;
+        max-width:100%;
+    }
+    button{
+      background-color:#404075;
+    }
+    button:hover{
+      background-color:#545385;
+    }
+  </style>
+  <body>
+    <div class="row row-list" style='background-color:#292827;'>
+      <div class="small-6 columns">
+          <b style='color:white;font-size:1.8em'>Code Share</b>
+      </div>
+      <div class="small-6 columns" style='color:white;margin-top:.4em'>
+          <span class="label success radius" style="color:white;background-color: cadetblue"><%= room %></label>
+      </div>
+    </div>
+    <div class="row row-list" style="padding-top:1em;background-color:#393939;color:white">
+        <div class="small-6 columns">
+            <div class="row">
+                <div class="small-7 columns">
+                    <b>My Code</b><br>
+                    UsernameXYZ
+                </div>
+                <div class="small-2 columns">
+                    <button class="small tiny radius expand">Load</button>
+                </div>
+                <div class="small-3 columns end">
+                  <select onchange="setLanguage(this)">
+                    <option value='JavaScript' selected>JavaScript</option>
+                    <option value='php5'>PHP</option>
+                  </select>
+                </div>
+            </div>
+        </div>
+        <div class="small-6 columns">
+            <div class="row">
+              <div class="small-8 columns">
+                  <b>Shared Code</b> <br>(<i style='font-size:.8em' id="current_lang"></i>)
+              </div>
+              <div class="small-2 columns ">
+                  <button class="small tiny radius expand">Save</button>
+              </div>
+              <div class="small-2 columns end">
+                  <button class="small tiny radius expand">Copy</button>
+              </div>
+          </div>
+        </div>
+    </div>
+    <div class="row row-list" style='margin-top:.5em'>
+      <div class="small-6 columns">
+        <pre id="insertblock"  contenteditable="true" onkeyup="updateCode(this.innerHTML)">
+        </pre>
+      </div>
+      <div class="small-6 columns">
+        <pre id='codeblock' contenteditable="false" style='background-color:transparent'>
+        </pre>
+      </div>
+    </div>
+  </body>
+</html>
