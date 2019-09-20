@@ -30,10 +30,12 @@ io.sockets.on('connection', function(socket) {
       }else{
         rooms[room]={};
       }
+
       socket.on('updateCode', function(code){
         rooms[room].content=code;
         io.sockets.in(room).emit('updateCode', code);
       });
+
   });
 
   io.sockets.emit('getRooms', rooms);
