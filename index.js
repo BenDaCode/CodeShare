@@ -26,21 +26,34 @@ io.sockets.on('connection', function(socket) {
     
       if(typeof rooms[room] !== "undefined"){
         var content= rooms[room].content;
+        rooms[room].connections=io.sockets.adapter.rooms[room].length;
         io.sockets.in(room).emit('updateCode', content);
       }else{
         rooms[room]={};
+        rooms[room].connections=io.sockets.adapter.rooms[room].length;
       }
 
       socket.on('updateCode', function(code){
         rooms[room].content=code;
         io.sockets.in(room).emit('updateCode', code);
+
       });
 
+      socket.on('disconnect', function () {
+        if(typeof io.sockets.adapter.rooms[room] !== "undefined"){
+          rooms[room].connections=io.sockets.adapter.rooms[room].length;
+        }else{
+          delete rooms[room];
+        }
+        io.sockets.emit('getRooms', rooms);
+      });
+
+      io.sockets.emit('getRooms', rooms);
+
   });
-
-  io.sockets.emit('getRooms', rooms);
-
 });
+
+
 
 http.listen(3000, function(){
   console.log('Code Share is running on port:3000');

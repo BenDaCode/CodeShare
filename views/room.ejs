@@ -43,9 +43,8 @@
 
   
     }
-
     socket.on('getRooms', function(rooms){
-      console.log(rooms);
+      document.getElementById('user_count').innerHTML=rooms[room].connections;
     });
 
     function setLanguage(sel) {
@@ -185,10 +184,13 @@
   </style>
   <body>
     <div class="row row-list" style='background-color:#292827;'>
-      <div class="small-6 columns">
+      <div class="small-9 columns">
           <b style='color:white;font-size:1.8em'>Code Share</b>
       </div>
-      <div class="small-6 columns" style='color:white;margin-top:.4em'>
+      <div class="small-2 columns" style='color:white;margin-top:.4em;text-align:right' title="Users connected to this session">
+          <span style='font-size:1.35em' id='user_count'></span> <i class="fi-torsos" style='font-size:1.4em'></i>
+      </div>
+      <div class="small-1 columns" style='color:white;margin-top:.4em;text-align:right'>
           <span class="label success radius" style="color:white;background-color: cadetblue"><%= room %></label>
       </div>
     </div>

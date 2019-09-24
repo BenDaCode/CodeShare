@@ -25,12 +25,34 @@
 
       for (var key in rooms) {
         if (rooms.hasOwnProperty(key)) {
-            content+="<li><a href='rooms/"+key+"'>"+key+"</a></li>";
+            content+="<div class='row' style='margin-bottom:1em;background-color:grey'>"+
+                      "<a href='rooms/"+key+"' style='color:white;font-weight:bold'>"+
+                        "<div class='small-10 columns'>"+unescape(key)+"</div>"+
+                        "<div class='small-2 columns'>"+
+                            "<div class='row'>"+
+                                "<div class='small-6 columns'><i class='fi-torsos'></i></div>"+
+                                "<div class='small-6 columns'>"+rooms[key].connections+"</div>"+
+                            "</div>"+
+                        "</div>"+
+                      "</a>"+
+                    "</div>";
         }
       }
 
       document.getElementById("rooms_list").innerHTML=content;
     });
+
+    function createRoom(){
+
+      var value=document.getElementById("new_room_name").value;
+
+      if(value.length>3){
+        var url="rooms/"+value;
+        var win = window.open(url, '_blank');
+        win.focus();
+      }
+
+    }
 
     </script>
   <style>
@@ -46,40 +68,74 @@
      margin-right:1%;
 
    }
-   .header{
-     margin:auto;
-     float:left;
-     width:100%;
-     height:1.5em;
-     font-weight:bold;
-     font-size:1.5em;
-     background-color:#333333;
-     color:white;
-     padding:.3em;
-   }
    pre{
-    background-color:lightgrey;
-    position:absolute;
-    top:5em;
-    bottom:0px;
-    width:inherit;
-    overflow:auto;
-
+      background-color:lightgrey;
+      height: 84vh;
+      width:100%;
+      overflow:auto;
    }
-
+   .row-list{
+        margin:0;
+        width:100%;
+        max-width:100%;
+    }
+    button{
+      background-color:#404075;
+    }
+    button:hover{
+      background-color:#545385;
+    }
+    .button{
+      background-color:#404075;
+    }
+    .button:hover{
+      background-color:#545385;
+    }
   </style>
   <body>
-    <div class="header">
-      Code Share
+    <div class="row row-list" style='background-color:#292827;'>
+      <div class="small-6 columns">
+          <b style='color:white;font-size:1.8em'>Code Share</b>
+      </div>
     </div>
     <div class="row">
-      <div class="small-3 columns">
-          Share your code or join a room!
-          <a href="rooms/data">New Room</a>
+      <div class="small-12 columns" style='text-align:center;font-size:3em;font-weight:bold'>
+          Welcome to <span style='color:#404075'>Code Share!</span>
       </div>
+    </div>
+    <div class="row">
+        <div class="small-12 columns" style='text-align:center'>
+          The easy way to share and store your code examples.
+        </div>
+      </div>
+    <div class="row" style='margin-top:4em'>
       <div class="small-3 columns">
-          <ul id="rooms_list">
-          </ul>
+          <div class="row">
+            <div class="small-12 columns">
+                <b style="font-size:1.5em">Create a new room...</b>
+            </div>
+          </div>
+          <div class="row"style="margin-top:1em">
+            <div class="small-12 columns">
+               <input type="text" placeholder="Room Name" id="new_room_name">
+            </div>
+          </div>
+          <div class="row">
+              <div class="small-12 columns">
+                  <a class="button small tiny radius expand" onclick="createRoom()">Create Room</a>
+              </div>
+            </div>
+      </div>
+      <div class="small-5 columns">
+          <div class="row">
+            <div class="small-12 columns">
+                <b style="font-size:1.5em">... or join an existing room!</b>
+            </div>
+          </div>
+          <div class="row" style="margin-top:2em">
+              <div id="rooms_list" class="small-12 columns">
+              </div>
+          </div>
       </div>
     </div>
    
