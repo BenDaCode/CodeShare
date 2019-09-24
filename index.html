@@ -20,6 +20,10 @@
     var socket = io();
     var language="JavaScript";
 
+    socket.on('connect', function(code) {
+      socket.emit('getRooms');
+    });
+        
     socket.on('getRooms', function(rooms){
       var content="";
 
@@ -27,7 +31,7 @@
         if (rooms.hasOwnProperty(key)) {
             content+="<div class='row' style='margin-bottom:1em;background-color:grey'>"+
                       "<a href='rooms/"+key+"' style='color:white;font-weight:bold'>"+
-                        "<div class='small-10 columns'>"+unescape(key)+"</div>"+
+                        "<div class='small-10 columns' style='text-align:left'>"+unescape(key)+"</div>"+
                         "<div class='small-2 columns'>"+
                             "<div class='row'>"+
                                 "<div class='small-6 columns'><i class='fi-torsos'></i></div>"+
@@ -104,37 +108,55 @@
       </div>
     </div>
     <div class="row">
-        <div class="small-12 columns" style='text-align:center'>
-          The easy way to share and store your code examples.
-        </div>
+      <div class="small-12 columns" style='text-align:center'>
+        The easy way to share and store your code examples.
       </div>
+    </div>
+   
     <div class="row" style='margin-top:4em'>
       <div class="small-3 columns">
-          <div class="row">
-            <div class="small-12 columns">
-                <b style="font-size:1.5em">Create a new room...</b>
-            </div>
+        <div class="row">
+          <div class="small-12 columns">
+              <b style="font-size:1.5em">Create a new room...</b>
           </div>
-          <div class="row"style="margin-top:1em">
-            <div class="small-12 columns">
-               <input type="text" placeholder="Room Name" id="new_room_name">
-            </div>
+        </div>
+        <div class="row" style="margin-top:1em">
+          <div class="small-12 columns">
+              <input type="text" placeholder="Room Name" id="new_room_name">
           </div>
-          <div class="row">
-              <div class="small-12 columns">
-                  <a class="button small tiny radius expand" onclick="createRoom()">Create Room</a>
-              </div>
-            </div>
+        </div>
+        <div class="row">
+          <div class="small-12 columns">
+              <a class="button small tiny radius expand" onclick="createRoom()">Create Room</a>
+          </div>
+        </div>
+        <div class="row">
+          <div  class="small-12 columns">
+            <hr>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-12 columns">
+              <i>You can also upload code snippets for easier code sharing!</i>
+          </div>
+        </div>
+        <div class="row" style="margin-top:1em">
+          <div class="small-12 columns">
+              <a class="button small tiny radius expand">Create New Snippet</a>
+          </div>
+        </div>
       </div>
-      <div class="small-5 columns">
-          <div class="row">
-            <div class="small-12 columns">
-                <b style="font-size:1.5em">... or join an existing room!</b>
-            </div>
+      <div class="small-9 columns" style="text-align:right">
+        <div class="row">
+          <div class="small-12 columns">
+              <b style="font-size:1.5em">... or join an existing room!</b>
           </div>
-          <div class="row" style="margin-top:2em">
-              <div id="rooms_list" class="small-12 columns">
-              </div>
+        </div>
+        <div class="row" style="margin-top:1em">
+          <div  class="small-6 columns" style="color:transparent">
+            test
+          </div>
+          <div id="rooms_list" class="small-6 columns">
           </div>
       </div>
     </div>

@@ -28,6 +28,7 @@ io.sockets.on('connection', function(socket) {
         var content= rooms[room].content;
         rooms[room].connections=io.sockets.adapter.rooms[room].length;
         io.sockets.in(room).emit('updateCode', content);
+        console.log(rooms);
       }else{
         rooms[room]={};
         rooms[room].connections=io.sockets.adapter.rooms[room].length;
@@ -49,6 +50,12 @@ io.sockets.on('connection', function(socket) {
       });
 
       io.sockets.emit('getRooms', rooms);
+
+  });
+
+  socket.on('getRooms', function(code){
+    console.log("ddd");
+    io.sockets.emit('getRooms', rooms);
 
   });
 });
