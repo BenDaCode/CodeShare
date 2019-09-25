@@ -29,7 +29,7 @@
 
       for (var key in rooms) {
         if (rooms.hasOwnProperty(key)) {
-            content+="<div class='row' style='margin-bottom:1em;background-color:grey'>"+
+            content+="<div class='row' style='margin-bottom:1em;background-color:grey;border-radius:.2em'>"+
                       "<a href='rooms/"+key+"' style='color:white;font-weight:bold'>"+
                         "<div class='small-10 columns' style='text-align:left'>"+unescape(key)+"</div>"+
                         "<div class='small-2 columns'>"+
@@ -63,7 +63,7 @@
     body{
       font-family:'Calibri';
       margin:0;
-      background-color:dimgrey;
+      background-color:lightgrey;
     }
    .container{
      width:48%;
@@ -84,13 +84,14 @@
         max-width:100%;
     }
     button{
-      background-color:#404075;
+      background-color:#383881;
     }
     button:hover{
       background-color:#545385;
     }
     .button{
-      background-color:#404075;
+      background-color:#383881;
+      font-weight:bold;
     }
     .button:hover{
       background-color:#545385;
@@ -104,7 +105,7 @@
     </div>
     <div class="row">
       <div class="small-12 columns" style='text-align:center;font-size:3em;font-weight:bold'>
-          Welcome to <span style='color:#404075'>Code Share!</span>
+          Welcome to <span style='color:#383881'>Code Share!</span>
       </div>
     </div>
     <div class="row">

@@ -19,6 +19,13 @@ app.get('/rooms/:room', function(req, res){
   })
 });
 
+app.get('/snippets/:view', function(req, res){
+  var snip_title = req.params.view; 
+  res.render('view', {
+    snip_title:snip_title
+  })
+});
+
 io.sockets.on('connection', function(socket) {
 
   socket.on('room', function(room) {
@@ -54,9 +61,7 @@ io.sockets.on('connection', function(socket) {
   });
 
   socket.on('getRooms', function(code){
-    console.log("ddd");
     io.sockets.emit('getRooms', rooms);
-
   });
 });
 

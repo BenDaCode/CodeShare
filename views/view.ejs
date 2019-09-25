@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    <title>Code Share - View "<%= snip_title %>" </title>
+    <link rel="stylesheet" href="/addons/foundation/css/foundation.css">
+    <link rel="stylesheet" href="/addons/foundation-icons/foundation-icons.css">
+  </head>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/highlight.min.js"></script>
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/styles/dracula.min.css">
+  <script>
+      hljs.initHighlightingOnLoad();
+  </script>
+  <style>
+    body{
+      font-family:'Calibri';
+      margin:0;
+      background-color:dimgrey;
+    }
+   .container{
+     width:48%;
+     float:left;
+     margin-left:1%;
+     margin-right:1%;
+
+   }
+   pre{
+      background-color:lightgrey;
+      height: 84vh;
+      width:100%;
+      overflow:auto;
+   }
+   .row-list{
+        margin:0;
+        width:100%;
+        max-width:100%;
+    }
+    button{
+      background-color:#404075;
+    }
+    button:hover{
+      background-color:#545385;
+    }
+  </style>
+  <body>
+    <div class="row row-list" style='background-color:#292827;'>
+      <div class="small-9 columns">
+          <b style='color:white;font-size:1.8em'>Code Share</b>
+      </div>
+    </div>
+    <div class="row row-list">
+            <div class="small-3 columns" style='margin-left:4em;margin-top:.5em'>
+                <div class="row" style="background-color:#393939;color:white;font-size:1.5em;margin-top:1em">
+                    <div class="small-8 columns">
+                        Related Topics
+                    </div>
+                </div>
+                <div class="row">
+                
+                </div>
+            </div>
+        <div class="small-7 columns" style='margin-right:4em'>
+            <div class="row" style="background-color:#393939;color:white;font-size:2em;font-weight:bold;margin-top:1em">
+                <div class="small-8 columns">
+                    <%= snip_title %>
+                </div>
+                <div class="small-8 columns">
+                    <i class=fi-edit></i>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns"  style="background-color:#393939;">
+                    <hr>
+                </div>
+            </div>
+            <div class="row" style="background-color:#393939;color:white;font-style:italic">
+                <div class="small-12 columns" name="host">
+                This is my code snippet description
+                </div>
+            </div>
+            <div class="row" style="background-color:#393939;color:white;padding-bottom:.8em;padding-top:1em">
+                    <div class="small-12 columns" name="host">
+                    <span class="label radius">JavaScript</span>
+                    <span class="label radius">JavaScript</span>
+                    <span class="label radius">JavaScript</span>
+                    </div>
+                </div>
+            <div class="row">
+                <pre style='max-height:80vh;overflow:auto;background-color:transparent'>
+                <code class='JavaScript' style='border-style:none'>var array = [];</code>
+                </pre>
+            </div>
+        </div>
+    </div>
+  </body>
+</html>
