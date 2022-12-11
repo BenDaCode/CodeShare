@@ -4,7 +4,7 @@
     "description": "real-time code sharing",
     "dependencies": {
         "ejs": "^2.7.1",
-        "express": "^4.17.1",
+        "express": "^4.17.3",
         "highlight.js": "^9.15.10",
         "socket.io": "^2.2.0"
     }
